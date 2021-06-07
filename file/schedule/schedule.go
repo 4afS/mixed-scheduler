@@ -26,7 +26,7 @@ type Plan struct {
 
 func (s *Schedule) validate() error {
 	validate := validator.New()
-	if err := validate.RegisterValidation("time", ValidateTime); err != nil {
+	if err := validate.RegisterValidation("time", validateTime); err != nil {
 		return err
 	}
 
@@ -37,7 +37,7 @@ func (s *Schedule) validate() error {
 	return nil
 }
 
-func ValidateTime(fl validator.FieldLevel) bool {
+func validateTime(fl validator.FieldLevel) bool {
 	timeRegex := regexp.MustCompile("^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$")
 	return timeRegex.MatchString(fl.Field().String())
 }
