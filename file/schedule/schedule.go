@@ -26,7 +26,7 @@ type Plan struct {
 func Parse(loaded string) (Schedule, error) {
 	schedule := Schedule{}
 
-	err := yaml.Unmarshal([]byte(loaded), &schedule)
+	err := yaml.UnmarshalStrict([]byte(loaded), &schedule)
 	if err != nil {
 		return Schedule{}, err
 	}
