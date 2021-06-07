@@ -78,6 +78,28 @@ plan:
 			false,
 		},
 		{
+			"term -1",
+			`
+base: 9:00
+plan:
+  - start: 9:00
+    term: -1
+    title: eat breakfast`,
+			Schedule{},
+			true,
+		},
+		{
+			"term over 1440",
+			`
+base: 9:00
+plan:
+  - start: 9:00
+    term: 1441
+    title: eat breakfast`,
+			Schedule{},
+			true,
+		},
+		{
 			"empty string",
 			"",
 			Schedule{},
