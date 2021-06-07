@@ -7,8 +7,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func LoadScheduleFile(path string) ([]byte, error) {
-	return ioutil.ReadFile(path)
+func LoadScheduleFile(path string) (string, error) {
+	bytes, err := ioutil.ReadFile(path)
+	return string(bytes), err
 }
 
 type Schedule struct {
@@ -22,10 +23,10 @@ type Plan struct {
 	Title   string `yaml:"title"`
 }
 
-func Parse(bytes []byte) (Schedule, error) {
+func Parse(loaded string) (Schedule, error) {
 	schedule := Schedule{}
 
-	err := yaml.UnmarshalStrict(bytes, &schedule)
+	err := yaml.Unmarshal([]byte(loaded), &schedule)
 	if err != nil {
 		return Schedule{}, err
 	}
