@@ -38,6 +38,15 @@ plan:
 			false,
 		},
 		{
+			`
+base: 9:00
+plan:
+  - start: 9:30
+		`,
+			Schedule{},
+			true,
+		},
+		{
 			"base: 9:00",
 			Schedule{
 				"9:00",
