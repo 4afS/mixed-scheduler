@@ -60,6 +60,15 @@ plan:
 			false,
 		},
 		{
+			"has no title",
+			`
+base: 9:00
+plan:
+  - start: 9:30`,
+			Schedule{},
+			true,
+		},
+		{
 			"only base time",
 			"base: 9:00",
 			Schedule{
@@ -81,16 +90,17 @@ plan:
 			true,
 		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := Parse(tt.arg)
 
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Parse() error = %v, Parse() = %v, wantErr %v", err, got, tt.wantErr)
 				return
 			}
 
-			if !reflect.DeepEqual(got, tt.want) {
+			if !tt.wantErr && !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Parse() = %v, want %v", got, tt.want)
 			}
 		})
