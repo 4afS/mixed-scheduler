@@ -5,13 +5,15 @@ import (
 	"testing"
 )
 
-func TestParseSchedule(t *testing.T) {
-	tcs := []struct {
-		arg        string
-		expected   Schedule
-		shouldFail bool
+func TestParse(t *testing.T) {
+	tests := []struct {
+		name    string
+		arg     string
+		want    Schedule
+		wantErr bool
 	}{
 		{
+			"default",
 			`
 base: 9:00
 plan:
@@ -19,6 +21,7 @@ plan:
     term: 30
     title: eat breakfast
   - start: 10:00
+    term: 30
     title: take a shower`,
 			Schedule{
 				Base: "9:00",
@@ -30,7 +33,7 @@ plan:
 					},
 					{
 						StartAt: "10:00",
-						Term:    0,
+						Term:    30,
 						Title:   "take a shower",
 					},
 				},
@@ -38,15 +41,26 @@ plan:
 			false,
 		},
 		{
+			"has no term",
 			`
 base: 9:00
 plan:
   - start: 9:30
-		`,
-			Schedule{},
-			true,
+    title: eat breakfast`,
+			Schedule{
+				Base: "9:00",
+				Plan: []Plan{
+					{
+						StartAt: "9:30",
+						Term:    0,
+						Title:   "eat breakfast",
+					},
+				},
+			},
+			false,
 		},
 		{
+			"only base time",
 			"base: 9:00",
 			Schedule{
 				"9:00",
@@ -55,32 +69,30 @@ plan:
 			false,
 		},
 		{
+			"empty string",
 			"",
 			Schedule{},
 			true,
 		},
 		{
+			"invalid string",
 			"b",
 			Schedule{},
 			true,
 		},
 	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := Parse(tt.arg)
 
-	for _, tc := range tcs {
-		result, err := Parse([]byte(tc.arg))
-		if !tc.shouldFail && err != nil {
-			t.Errorf("unexpected error occured: %v\n", err)
-			continue
-		}
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
 
-		if tc.shouldFail && err == nil {
-			t.Errorf("expected error not occured: %v\n", result)
-			continue
-		}
-
-		if !reflect.DeepEqual(result, tc.expected) {
-			t.Errorf("expected: %v\nbut got: %v\n", tc.expected, result)
-			continue
-		}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Parse() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }
