@@ -78,6 +78,22 @@ plan:
 			false,
 		},
 		{
+			"invalid base time format",
+			"base: 24:00",
+			Schedule{},
+			true,
+		},
+		{
+			"invalid start time",
+			`
+base: 9:00
+plan:
+  - start: 24:00
+    title: eat breakfast`,
+			Schedule{},
+			true,
+		},
+		{
 			"term -1",
 			`
 base: 9:00
