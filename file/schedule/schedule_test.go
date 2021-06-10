@@ -127,6 +127,17 @@ plan:
 			true,
 		},
 		{
+			"empty title",
+			`
+base: 9:00
+plan:
+  - start: 9:00
+    term: 10 
+    title: `,
+			Schedule{},
+			true,
+		},
+		{
 			"empty string",
 			"",
 			Schedule{},
