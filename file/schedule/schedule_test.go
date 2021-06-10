@@ -18,42 +18,19 @@ func TestParse(t *testing.T) {
 base: 9:00
 plan:
   - start: 9:30
-    term: 1
     title: eat breakfast
   - start: 10:00
-    term: 1440
     title: take a shower`,
 			Schedule{
 				Base: "9:00",
 				Plan: []Plan{
 					{
 						StartAt: "9:30",
-						Term:    1,
 						Title:   "eat breakfast",
 					},
 					{
 						StartAt: "10:00",
-						Term:    1440,
 						Title:   "take a shower",
-					},
-				},
-			},
-			false,
-		},
-		{
-			"has no term",
-			`
-base: 9:00
-plan:
-  - start: 9:30
-    title: eat breakfast`,
-			Schedule{
-				Base: "9:00",
-				Plan: []Plan{
-					{
-						StartAt: "9:30",
-						Term:    0,
-						Title:   "eat breakfast",
 					},
 				},
 			},
@@ -94,45 +71,11 @@ plan:
 			true,
 		},
 		{
-			"term < 0",
-			`
-base: 9:00
-plan:
-  - start: 9:00
-    term: -1
-    title: eat breakfast`,
-			Schedule{},
-			true,
-		},
-		{
-			"term > 1440",
-			`
-base: 9:00
-plan:
-  - start: 9:00
-    term: 1441
-    title: eat breakfast`,
-			Schedule{},
-			true,
-		},
-		{
-			"term has alphabet",
-			`
-base: 9:00
-plan:
-  - start: 9:00
-    term: 10h 
-    title: eat breakfast`,
-			Schedule{},
-			true,
-		},
-		{
 			"empty title",
 			`
 base: 9:00
 plan:
   - start: 9:00
-    term: 10 
     title: `,
 			Schedule{},
 			true,

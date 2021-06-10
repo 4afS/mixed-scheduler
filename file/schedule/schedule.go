@@ -20,7 +20,6 @@ type Schedule struct {
 
 type Plan struct {
 	StartAt string `yaml:"start" validate:"required,time"`
-	Term    int    `yaml:"term" validate:"min=0,max=1440,numeric"`
 	Title   string `yaml:"title" validate:"required"`
 }
 
