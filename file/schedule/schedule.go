@@ -94,7 +94,7 @@ func (schedule Schedule) toPlanModels(now time.Time) ([]model.Plan, error) {
 		h, m := getTime(p.StartAt)
 
 		date := todayWithTime(now, h, m)
-		if !hasChanged {
+		if hasChanged {
 			date = date.Add(24 * time.Hour)
 		}
 
