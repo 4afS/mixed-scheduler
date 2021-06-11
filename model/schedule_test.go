@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func TestPlan_AddDiffBetweenBaseAndGiven(t *testing.T) {
+func TestPlanAddDiffBetweenBaseAndGiven(t *testing.T) {
 	type fields struct {
 		StartAt time.Time
 		Title   string
