@@ -61,10 +61,7 @@ func Parse(loaded string) (Schedule, error) {
 }
 
 func (schedule Schedule) ToModel(now time.Time) (model.Base, []model.Plan) {
-	base := schedule.toBaseModel(now)
-	plans := schedule.toPlanModels(now)
-	return base, plans
-
+	return schedule.toBaseModel(now), schedule.toPlanModels(now)
 }
 
 func (schedule Schedule) toBaseModel(now time.Time) model.Base {
