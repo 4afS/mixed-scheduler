@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/4afs/mixed-scheduler/model"
 )
 
 func TestParse(t *testing.T) {
@@ -186,6 +188,47 @@ func TestGetTime(t *testing.T) {
 			}
 			if got1 != tt.want1 {
 				t.Errorf("getTime() got1 = %v, want %v", got1, tt.want1)
+			}
+		})
+	}
+}
+
+func TestScheduleToBaseModel(t *testing.T) {
+	now := time.Date(2000, 1, 1, 0, 0, 0, 0, time.Now().Location())
+	type fields struct {
+		Base string
+		Plan []Plan
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		want    model.Base
+		wantErr bool
+	}{
+		{
+			"",
+			fields{
+				Base: "9:10",
+			},
+			model.Base{
+				Time: time.Date(2000, 1, 1, 9, 10, 0, 0, time.Now().Location()),
+			},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			schedule := Schedule{
+				Base: tt.fields.Base,
+				Plan: tt.fields.Plan,
+			}
+			got, err := schedule.toBaseModel(now)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Schedule.toBaseModel() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Schedule.toBaseModel() = %v, want %v", got, tt.want)
 			}
 		})
 	}
