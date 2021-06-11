@@ -3,6 +3,7 @@ package schedule
 import (
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestParse(t *testing.T) {
@@ -105,6 +106,35 @@ plan:
 
 			if !tt.wantErr && !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Parse() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTodayWithTime(t *testing.T) {
+	now := time.Date(2000, 1, 1, 0, 0, 0, 0, time.Now().Location())
+	type args struct {
+		h int
+		m int
+	}
+	tests := []struct {
+		name string
+		args args
+		want time.Time
+	}{
+		{
+			"default",
+			args{
+				10,
+				11,
+			},
+			time.Date(2000, 1, 1, 10, 11, 0, 0, time.Now().Location()),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := todayWithTime(now, tt.args.h, tt.args.m); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("todayWithTime() = %v, want %v", got, tt.want)
 			}
 		})
 	}
