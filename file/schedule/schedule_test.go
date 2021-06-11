@@ -139,3 +139,54 @@ func TestTodayWithTime(t *testing.T) {
 		})
 	}
 }
+
+func TestGetTime(t *testing.T) {
+	tests := []struct {
+		name  string
+		arg   string
+		want  int
+		want1 int
+	}{
+		{
+			"basic 9 o'clock",
+			"9:00",
+			9,
+			0,
+		},
+		{
+			"basic 12 o'clock",
+			"12:00",
+			12,
+			0,
+		},
+		{
+			"zero-fill 9 o'clock",
+			"09:00",
+			9,
+			0,
+		},
+		{
+			"basic 9:01",
+			"9:01",
+			9,
+			1,
+		},
+		{
+			"basic 9:11",
+			"9:11",
+			9,
+			11,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1 := getTime(tt.arg)
+			if got != tt.want {
+				t.Errorf("getTime() got = %v, want %v", got, tt.want)
+			}
+			if got1 != tt.want1 {
+				t.Errorf("getTime() got1 = %v, want %v", got1, tt.want1)
+			}
+		})
+	}
+}
