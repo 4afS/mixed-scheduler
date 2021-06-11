@@ -200,10 +200,9 @@ func TestScheduleToBaseModel(t *testing.T) {
 		Plan []Plan
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		want    model.Base
-		wantErr bool
+		name   string
+		fields fields
+		want   model.Base
 	}{
 		{
 			"",
@@ -213,7 +212,6 @@ func TestScheduleToBaseModel(t *testing.T) {
 			model.Base{
 				Time: time.Date(2000, 1, 1, 9, 10, 0, 0, time.Now().Location()),
 			},
-			false,
 		},
 	}
 	for _, tt := range tests {
@@ -222,13 +220,77 @@ func TestScheduleToBaseModel(t *testing.T) {
 				Base: tt.fields.Base,
 				Plan: tt.fields.Plan,
 			}
-			got, err := schedule.toBaseModel(now)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("Schedule.toBaseModel() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
+			got := schedule.toBaseModel(now)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Schedule.toBaseModel() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestScheduleToPlanModels(t *testing.T) {
+	now := time.Date(2000, 1, 1, 0, 0, 0, 0, time.Now().Location())
+	type fields struct {
+		Base string
+		Plan []Plan
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   []model.Plan
+	}{
+		{
+			"one plan",
+			fields{
+				Plan: []Plan{
+					{
+						StartAt: "10:00",
+						Title:   "eat breakfast",
+					},
+				},
+			},
+			[]model.Plan{
+				{
+					StartAt: time.Date(2000, 1, 1, 10, 0, 0, 0, time.Now().Location()),
+					Title:   "eat breakfast",
+				},
+			},
+		},
+		{
+			"plans",
+			fields{
+				Plan: []Plan{
+					{
+						StartAt: "10:00",
+						Title:   "eat breakfast",
+					},
+					{
+						StartAt: "11:30",
+						Title:   "leave home",
+					},
+				},
+			},
+			[]model.Plan{
+				{
+					StartAt: time.Date(2000, 1, 1, 10, 0, 0, 0, time.Now().Location()),
+					Title:   "eat breakfast",
+				},
+				{
+					StartAt: time.Date(2000, 1, 1, 11, 30, 0, 0, time.Now().Location()),
+					Title:   "leave home",
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			schedule := Schedule{
+				Base: tt.fields.Base,
+				Plan: tt.fields.Plan,
+			}
+			got := schedule.toPlanModels(now)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Schedule.toPlanModels() = %v, want %v", got, tt.want)
 			}
 		})
 	}

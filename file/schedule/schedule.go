@@ -60,32 +60,24 @@ func Parse(loaded string) (Schedule, error) {
 	return schedule, nil
 }
 
-func (schedule Schedule) ToModel(now time.Time) (model.Base, []model.Plan, error) {
-	base, err := schedule.toBaseModel(now)
-	if err != nil {
-		return model.Base{}, nil, err
-	}
-
-	plans, err := schedule.toPlanModels(now)
-	if err != nil {
-		return model.Base{}, nil, err
-	}
-
-	return base, plans, nil
+func (schedule Schedule) ToModel(now time.Time) (model.Base, []model.Plan) {
+	base := schedule.toBaseModel(now)
+	plans := schedule.toPlanModels(now)
+	return base, plans
 
 }
 
-func (schedule Schedule) toBaseModel(now time.Time) (model.Base, error) {
+func (schedule Schedule) toBaseModel(now time.Time) model.Base {
 	h, m := getTime(schedule.Base)
 
 	base := model.Base{
 		Time: todayWithTime(now, h, m),
 	}
 
-	return base, nil
+	return base
 }
 
-func (schedule Schedule) toPlanModels(now time.Time) ([]model.Plan, error) {
+func (schedule Schedule) toPlanModels(now time.Time) []model.Plan {
 	hasChanged := false
 
 	var plans []model.Plan
@@ -104,7 +96,7 @@ func (schedule Schedule) toPlanModels(now time.Time) ([]model.Plan, error) {
 		})
 	}
 
-	return plans, nil
+	return plans
 }
 
 func getTime(time string) (int, int) {
