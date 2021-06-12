@@ -57,8 +57,8 @@ func main() {
 
 	loaded, err := schedule.LoadScheduleFile(configPath)
 	if err != nil {
-		presenter.PrintErr(fmt.Errorf(`
-schedule file not found
+		presenter.PrintErr(fmt.Errorf(
+			`schedule file not found
 put the schedule file to ~/.mxs/schedule.yaml
 		`))
 	}
