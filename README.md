@@ -20,3 +20,14 @@ Create schedule file to `$HOME/.mxs/schedule.yaml`.
     - start: 12:00
       title: eat lunch
 ```
+
+## Usage
+- Show the schedule based on the current time:
+```
+  mxs -now
+```
+
+- Show the schedule based on given time:
+```
+  mxs -on 12:00
+```
