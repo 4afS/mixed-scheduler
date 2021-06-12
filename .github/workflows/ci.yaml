@@ -1,8 +1,11 @@
 name: ci
 on:
   push:
-    paths-ignore:
-      - 'README.md'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   golangci:
