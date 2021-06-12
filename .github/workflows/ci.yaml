@@ -1,8 +1,5 @@
 name: ci
-on:
-  push:
-    paths-ignore:
-      - 'README.md'
+on: [push, pull_request]
 
 jobs:
   golangci:
