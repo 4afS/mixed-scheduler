@@ -100,6 +100,6 @@ put the schedule file to ~/.mxs/schedule.yaml
 	b, plans := s.ToModel(now)
 	for _, plan := range plans {
 		added := plan.AddDiffBetweenBaseAndGiven(b, date)
-		presenter.Show(added)
+		presenter.PrintPlans(added)
 	}
 }
