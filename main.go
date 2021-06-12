@@ -59,8 +59,7 @@ func main() {
 	if err != nil {
 		presenter.PrintErr(fmt.Errorf(
 			`schedule file not found
-put the schedule file to ~/.mxs/schedule.yaml
-		`))
+put the schedule file to ~/.mxs/schedule.yaml`))
 	}
 
 	s, err := schedule.Parse(loaded)
