@@ -22,11 +22,11 @@ var (
 func usage() {
 	fmt.Printf(`
 Usage:
-	-now
-		%v
-	-on
-		%v
-		ex) %v
+  -now
+    %v
+  -on
+    %v
+    ex) %v
 `, nowUsage, onUsage, onExample)
 	os.Exit(0)
 }
