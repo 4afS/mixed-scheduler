@@ -9,5 +9,5 @@ import (
 func Show(p model.Plan) {
 	h := p.StartAt.Hour()
 	m := p.StartAt.Minute()
-	fmt.Printf("%v:%v - %v\n", h, m, p.Title)
+	fmt.Printf("%02v:%02v - %v\n", h, m, p.Title)
 }
